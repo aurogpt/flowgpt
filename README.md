@@ -73,15 +73,17 @@ const flowBot = FlowBot.create({
             ],
         }),
     ],
-    instructionModel: new ChatOpenAI({
-        modelName: "gpt-4",
-        apiKey: process.env.OPENAI_API_KEY,
-        temperature: 0.5,
+    model: new ChatOpenAI({
+        modelName: "gpt-4o-mini",
+        // apiKey: process.env.OPENAI_API_KEY,
     }),
-    detectionModel: new ChatOpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-    }),
+
+    // Optional: Prompt for detecting scenario & step
+    // prompt: "...",
 });
+
+// Example extending default prompt
+flowBot.prompt += "This text is appended to the default prompt";
 
 // Example usage
 const response = await flowBot.invoke(`
@@ -100,9 +102,8 @@ The `FlowBot` constructor accepts the following configuration options:
 -   `name`: Bot identifier
 -   `description`: Bot purpose and functionality description
 -   `scenarios`: Array of conversation scenarios
--   `instructionModel`: LLM instance for generating responses
--   `detectionModel`: LLM instance for intent detection
--   `temperature`: Response randomness (0-1, default: 0.5)
+-   `model`: LLM instance for detecting scenario & step
+-   `prompt`: Prompt for detecting scenario & step
 
 ## Advanced Usage
 

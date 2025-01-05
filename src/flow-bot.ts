@@ -5,7 +5,14 @@ import { CanFormatString } from "./utils/can-format-string";
 // Types
 import type { Scenario } from "./scenario";
 import type { Step } from "./step";
+
+// Messages
 import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
+import {
+    AIMessage,
+    BaseMessage,
+    SystemMessage,
+} from "@langchain/core/messages";
 
 export type IFlowBot = {
     name: string;
@@ -18,11 +25,6 @@ export type IFlowBot = {
 export const detectResponse = z.object({
     scenarioId: z.string(),
     stepId: z.string(),
-});
-
-export const instructionResponse = z.object({
-    what_bot_should_do: z.string(),
-    should_reply: z.boolean(),
 });
 
 /**
@@ -56,9 +58,8 @@ export class FlowBot extends CanFormatString {
     public description: string;
     public scenarios: Scenario[];
     public instructionModel: BaseChatModel;
-    public detectionModel: BaseChatModel;
-    public instructionModelPrompt: string;
-    public detectionModelPrompt: string;
+    public model: BaseChatModel;
+    public prompt: string;
 
     constructor(object: IFlowBot) {
         super();
@@ -66,26 +67,8 @@ export class FlowBot extends CanFormatString {
         this.description = object.description;
         this.scenarios = object.scenarios;
         this.instructionModel = object.instructionModel;
-        this.detectionModel = object.detectionModel;
-        this.instructionModelPrompt = `
-        You are BossGPT, a system designed to guide other bots on their next actions based on a given scenario and step. Please always give next action for the bot neither previous nor for user.
-
-        ### Current Inputs:
-
-        -   **Scenario Context:** "{{scenario}}"
-        -   **Current Step ID:** "{{stepId}}"
-        -   **User Interaction History:** "{{input}}"
-
-        ### Task:
-
-        Analyze the provided information and determine the next best action for the bot. Your response should be:
-
-        1. **Clear:** Provide a concise action the bot should perform next.
-        2. **Contextual:** Ensure your suggestion aligns with the scenario and the current step.
-        3. **Actionable:** Offer a specific instruction or decision the bot can implement immediately.
-        `;
-
-        this.detectionModelPrompt = `
+        this.model = object.detectionModel;
+        this.prompt = `
         You are an advanced AI system designed to analyze input history, detect the appropriate scenario, and identify the user's current step within that scenario.
 
         Here are the scenarios:
@@ -123,8 +106,8 @@ export class FlowBot extends CanFormatString {
     }
 
     async detectCurrentStage(input: string) {
-        const llm = this.detectionModel.withStructuredOutput(detectResponse);
-        const prompt = this.formatString(this.detectionModelPrompt, {
+        const llm = this.model.withStructuredOutput(detectResponse);
+        const prompt = this.formatString(this.prompt, {
             input,
             scenarios: this.scenarios.map((s) => s.toString()).join(", "),
         });
@@ -140,11 +123,21 @@ export class FlowBot extends CanFormatString {
         const nextStep = this.findNextStep(currentStep.id, scenario.steps);
 
         if (!nextStep) {
-            throw new Error(
-                `No next step found for step ID '${currentStep.id}'.`
-            );
+            return null;
         }
 
         return nextStep.instructions;
+    }
+
+    loadMessageHistory(history: BaseMessage[]): string {
+        return history
+            .map((message) => {
+                let sender = "Human";
+                if (message instanceof SystemMessage) sender = "System";
+                else if (message instanceof AIMessage) sender = "AI";
+
+                return `${sender}: ${message.content}`;
+            })
+            .join("\n");
     }
 }
