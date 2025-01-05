@@ -1,5 +1,11 @@
 # @aurogpt/flowgpt
 
+## 2.1.3
+
+### Patch Changes
+
+- fcab6b9: fix: mjs compatibility
+
 ## 2.1.2
 
 ### Patch Changes
