@@ -10,7 +10,7 @@ export default defineConfig({
     format: ["esm", "cjs"],
     outExtension({ format }) {
         return {
-            js: `.js`,
+            js: format === "esm" ? ".mjs" : ".js",
             mjs: `.mjs`,
             cjs: `.cjs`,
         };
