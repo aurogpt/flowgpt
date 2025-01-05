@@ -6,9 +6,19 @@
     "main": "dist/index.js",
     "module": "dist/index.mjs",
     "types": "dist/index.d.ts",
+    "repository": {
+        "url": "https://github.com/aurogpt/flowgpt"
+    },
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        }
+    },
     "scripts": {
         "release": "yarn build && changeset publish",
-        "build": "tsup src/*.ts src/**/*.ts --dts --format esm,cjs --minify --clean --onSuccess 'cp -r src/contents dist/'",
+        "build": "tsup src/*.ts src/**/*.ts --dts --format esm,cjs,mjs --minify --clean --onSuccess 'cp -r src/contents dist/'",
         "lint": "eslint ./src "
     },
     "devDependencies": {
@@ -30,5 +40,9 @@
         "@typescript-eslint/parser": "^8.19.0",
         "eslint": "^9.17.0",
         "langchain": "^0.3.9"
+    },
+    "publishConfig": {
+        "provenance": true,
+        "access": "public"
     }
 }
