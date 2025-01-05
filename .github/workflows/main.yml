@@ -8,6 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: oven-sh/setup-bun@v2
       - uses: actions/checkout@v3
       - name: Cache bun dependencies
         uses: actions/cache@v3
