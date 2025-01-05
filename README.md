@@ -103,7 +103,6 @@ The `FlowBot` constructor accepts the following configuration options:
 -   `description`: Bot purpose and functionality description
 -   `scenarios`: Array of conversation scenarios
 -   `model`: LLM instance for detecting scenario & step
--   `prompt`: Prompt for detecting scenario & step
 
 ## Advanced Usage
 

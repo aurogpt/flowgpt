@@ -18,8 +18,7 @@ export type IFlowBot = {
     name: string;
     description: string;
     scenarios: Scenario[];
-    instructionModel: BaseChatModel;
-    detectionModel: BaseChatModel;
+    model: BaseChatModel;
 };
 
 export const detectResponse = z.object({
@@ -43,11 +42,8 @@ export const detectResponse = z.object({
  *   name: "Test Flow Bot",
  *   description: "A test flow bot",
  *   scenarios,
- *   instructionModel: new ChatOpenAI({
+ *   model: new ChatOpenAI({
  *     modelName: "gpt-4o",
- *     apiKey: "sk-XXXXXX",
- *   }),
- *   detectionModel: new ChatOpenAI({
  *     apiKey: "sk-XXXXXX",
  *   }),
  * });
@@ -65,7 +61,7 @@ export class FlowBot extends CanFormatString {
         this.name = object.name;
         this.description = object.description;
         this.scenarios = object.scenarios;
-        this.model = object.detectionModel;
+        this.model = object.model;
         this.prompt = `
         You are an advanced AI system designed to analyze input history, detect the appropriate scenario, and identify the user's current step within that scenario.
 
