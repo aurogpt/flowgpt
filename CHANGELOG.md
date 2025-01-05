@@ -4,8 +4,8 @@
 
 ### Major Changes
 
-- 01ac6b2: ## 1.0.0
+-   01ac6b2: ## 1.0.0
 
-  ### Launching FlowGPT
+    ### Launching FlowGPT
 
-  - The first release of FlowGPT introduces a support framework designed to create bots that follow predefined step sequences. Built upon LangChain, this framework offers compatibility with both OpenAI and Azure OpenAI models.
+    -   The first release of FlowGPT introduces a support framework designed to create bots that follow predefined step sequences. Built upon LangChain, this framework offers compatibility with both OpenAI and Azure OpenAI models.
