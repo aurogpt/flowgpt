@@ -17,7 +17,7 @@
         }
     },
     "scripts": {
-        "release": "yarn build && changeset publish",
+        "release": "bun run build && changeset publish --access=public",
         "build": "tsup src/*.ts src/**/*.ts --dts --format esm,cjs,mjs --minify --clean --onSuccess 'cp -r src/contents dist/'",
         "lint": "eslint ./src "
     },
@@ -42,7 +42,6 @@
         "langchain": "^0.3.9"
     },
     "publishConfig": {
-        "provenance": true,
         "access": "public"
     }
 }
