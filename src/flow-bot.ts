@@ -57,7 +57,6 @@ export class FlowBot extends CanFormatString {
     public name: string;
     public description: string;
     public scenarios: Scenario[];
-    public instructionModel: BaseChatModel;
     public model: BaseChatModel;
     public prompt: string;
 
@@ -66,7 +65,6 @@ export class FlowBot extends CanFormatString {
         this.name = object.name;
         this.description = object.description;
         this.scenarios = object.scenarios;
-        this.instructionModel = object.instructionModel;
         this.model = object.detectionModel;
         this.prompt = `
         You are an advanced AI system designed to analyze input history, detect the appropriate scenario, and identify the user's current step within that scenario.
