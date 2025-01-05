@@ -17,6 +17,6 @@ jobs:
           key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
           restore-keys: |
             ${{ runner.os }}-bun-
-      - run: curl -fsSL https://bun.sh/install | bash
       - run: bun install
-      - run: bun lint && bun build
+      - run: bun run lint
+      - run: bun run build
