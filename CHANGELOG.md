@@ -1,5 +1,11 @@
 # @aurogpt/flowgpt
 
+## 2.1.2
+
+### Patch Changes
+
+- 43d6a56: fix: typesafety issues
+
 ## 2.1.1
 
 ### Patch Changes
