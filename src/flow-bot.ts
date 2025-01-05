@@ -1,10 +1,11 @@
-import { v4 as uuidv4 } from "uuid";
-import type { Scenario } from "./scenario";
-import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
-import { MarkdownPromptLoader } from "./utils/markdown-prompt-loader";
-import { CanFormatString } from "./utils/can-format-string";
 import { z } from "zod";
+import { v4 as uuidv4 } from "uuid";
+import { CanFormatString } from "./utils/can-format-string";
+
+// Types
+import type { Scenario } from "./scenario";
 import type { Step } from "./step";
+import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
 export type IFlowBot = {
     name: string;
@@ -66,12 +67,35 @@ export class FlowBot extends CanFormatString {
         this.scenarios = object.scenarios;
         this.instructionModel = object.instructionModel;
         this.detectionModel = object.detectionModel;
-        this.instructionModelPrompt = MarkdownPromptLoader.fromFile(
-            "./contents/instruction-prompt.md"
-        ).getContent();
-        this.detectionModelPrompt = MarkdownPromptLoader.fromFile(
-            "./contents/detection-prompt.md"
-        ).getContent();
+        this.instructionModelPrompt = `
+        You are BossGPT, a system designed to guide other bots on their next actions based on a given scenario and step. Please always give next action for the bot neither previous nor for user.
+
+        ### Current Inputs:
+
+        -   **Scenario Context:** "{{scenario}}"
+        -   **Current Step ID:** "{{stepId}}"
+        -   **User Interaction History:** "{{input}}"
+
+        ### Task:
+
+        Analyze the provided information and determine the next best action for the bot. Your response should be:
+
+        1. **Clear:** Provide a concise action the bot should perform next.
+        2. **Contextual:** Ensure your suggestion aligns with the scenario and the current step.
+        3. **Actionable:** Offer a specific instruction or decision the bot can implement immediately.
+        `;
+
+        this.detectionModelPrompt = `
+        You are an advanced AI system designed to analyze input history, detect the appropriate scenario, and identify the user's current step within that scenario.
+
+        Here are the scenarios:
+
+        {{ scenarios }}
+
+        Given the following input history, identify the scenario and step that the user is currently in:
+
+        {{ input }}
+        `;
     }
 
     static create(object: IFlowBot): FlowBot {
