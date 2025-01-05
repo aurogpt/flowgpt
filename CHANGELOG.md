@@ -1,5 +1,11 @@
 # @aurogpt/flowgpt
 
+## 2.1.1
+
+### Patch Changes
+
+- 1f4f4b6: fix: instructionModel is deprecated and removed
+
 ## 2.1.0
 
 ### Minor Changes
