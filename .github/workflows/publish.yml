@@ -17,10 +17,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Cache bun dependencies
+        uses: actions/cache@v3
         with:
-          node-version: 16.x
-          cache: "bun"
+          path: ~/.bun
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
       - run: curl -fsSL https://bun.sh/install | bash
       - run: bun install
       - name: Create Release Pull Request or Publish

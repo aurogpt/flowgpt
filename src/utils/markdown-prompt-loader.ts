@@ -2,6 +2,16 @@ import * as fs from "fs";
 import * as path from "path";
 import { fileURLToPath } from "url";
 
+/**
+ * A class that loads a markdown file and provides its content as a string.
+ *
+ * @param markdown - The markdown content to load.
+ * @returns A new MarkdownPromptLoader object.
+ *
+ * @example
+ * const loader = MarkdownPromptLoader.fromFile("./path/to/file.md");
+ * const content = loader.getContent();
+ */
 export class MarkdownPromptLoader {
     private content: string;
 

@@ -6,6 +6,23 @@ export type IStep = {
     instructions: string;
 };
 
+/**
+ * A step represents a single action that a user takes to achieve a specific goal.
+ * It is a function that takes the user's input and returns the next step to execute.
+ *
+ * @param name - The name of the step.
+ * @param description - A description of the step.
+ * @param instructions - The instructions for the step.
+ * @returns A new step object.
+ *
+ * @example
+ * const step = Step.create({
+ *   name: "Add to Cart",
+ *   description: "Confirm the user wants to add the product to the cart",
+ *   instructions:
+ *     "Confirm the product selection and display cart contents.",
+ * });
+ */
 export class Step {
     readonly id = uuidv4();
     public name: string;

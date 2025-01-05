@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import type { Scenario } from "./scenario";
 import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { MarkdownPromptLoader } from "./utils/markdown-prompt-loader";
-import { CanFormatString } from "./base/can-format-string";
+import { CanFormatString } from "./utils/can-format-string";
 import { z } from "zod";
 import type { Step } from "./step";
 
@@ -24,6 +24,31 @@ export const instructionResponse = z.object({
     should_reply: z.boolean(),
 });
 
+/**
+ * A FlowBot is a bot that follows a predefined sequence of steps to achieve a specific goal.
+ * It is a collection of scenarios that are executed in order, with each scenario being a sequence of steps.
+ *
+ * @param name - The name of the flow bot.
+ * @param description - A description of the flow bot.
+ * @param scenarios - An array of scenarios that make up the flow bot.
+ * @param instructionModel - The model to use for generating instructions.
+ * @param detectionModel - The model to use for detecting the current stage.
+ * @returns A new flow bot object.
+ *
+ * @example
+ * const flowBot = FlowBot.create({
+ *   name: "Test Flow Bot",
+ *   description: "A test flow bot",
+ *   scenarios,
+ *   instructionModel: new ChatOpenAI({
+ *     modelName: "gpt-4o",
+ *     apiKey: "sk-XXXXXX",
+ *   }),
+ *   detectionModel: new ChatOpenAI({
+ *     apiKey: "sk-XXXXXX",
+ *   }),
+ * });
+ */
 export class FlowBot extends CanFormatString {
     readonly id = uuidv4();
     public name: string;
